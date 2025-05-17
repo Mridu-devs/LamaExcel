@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form to Excel</title>
+</head>
+<body>
+  <h2>Submit Your Info</h2>
+  <form id="dataForm">
+    Name: <input type="text" name="name" required><br><br>
+    Email: <input type="email" name="email" required><br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById('dataForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      console.log('data',data)
+
+      const response = await fetch('/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        alert('Data saved to Excel!');
+        this.reset();
+      } else {
+        alert('Error saving data.');
+      }
+    });
+  </script>
+</body>
+</html>
